@@ -6,17 +6,21 @@
         <!-- 添加持久化类 -->
         <class>cn.succy.jpa.entity.Customer</class>
         <class>cn.succy.jpa.entity.Order</class>
+        <class>cn.succy.jpa.entity.Manager</class>
+        <class>cn.succy.jpa.entity.Department</class>
 
         <properties>
             <!-- 连接数据库的基本信息 -->
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql:///jpa"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://127.0.0.1:3306/jpa?characterEncoding=utf8"/>
             <property name="javax.persistence.jdbc.user" value="root"/>
             <property name="javax.persistence.jdbc.password" value="wsgsx2914"/>
 
             <!-- 配置 JPA 实现产品的基本属性. 配置 hibernate 的基本属性 -->
             <property name="hibernate.format_sql" value="true"/>
             <property name="hibernate.show_sql" value="true"/>
+            <!--配置方言，目的是解决中文乱码问题-->
+            <property name="hibernate.dialect" value="cn.succy.jpa.hibernate.dialect.MySQL5DialectUTF8"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
         </properties>
     </persistence-unit>

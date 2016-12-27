@@ -1,6 +1,8 @@
 package cn.succy.jpa.test;
 
 import cn.succy.jpa.entity.Customer;
+import cn.succy.jpa.entity.Department;
+import cn.succy.jpa.entity.Manager;
 import cn.succy.jpa.entity.Order;
 import org.junit.After;
 import org.junit.Before;
@@ -10,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.persistence.Table;
 import java.util.Date;
 
 /**
@@ -143,11 +146,39 @@ public class JPATest {
         order1.setCustomer(customer);
         order2.setCustomer(customer);
 
-//        customer.getOrders().add(order1);
-//        customer.getOrders().add(order2);
+        // customer.getOrders().add(order1);
+        // customer.getOrders().add(order2);
 
         em.persist(order1);
         em.persist(order2);
         em.persist(customer);
+    }
+
+    @Test
+    public void testOneToOnePersistence() {
+        Manager manager = new Manager();
+        manager.setMgrName("王尼玛");
+
+        Department dept = new Department();
+        dept.setDeptName("扯淡部");
+
+        // 设置关联
+        dept.setMgr(manager);
+        // 持久化操作
+        // 1 先持久化维护关联关系的一方,结果会多出update语句
+        // em.persist(dept);
+        // em.persist(manager);
+        // 2 先持久化不维护关联关系的一方，在缓存中有manager的主键，则不需要多发出update语句
+
+        em.persist(manager);
+        em.persist(dept);
+    }
+
+    @Test
+    public void testOneToOneDelete() {
+        // 这样子是不能删除的，因为有外键约束
+        // 修改一下，使其级联删除
+        Manager manager = em.find(Manager.class, 1);
+        em.remove(manager);
     }
 }
